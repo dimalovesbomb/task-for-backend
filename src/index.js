@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import 'fontsource-roboto';
 import App from './containers/app';
 import reducer from './reducers';
 

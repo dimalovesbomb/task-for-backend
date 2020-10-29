@@ -9,8 +9,8 @@ const initialState = [];
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
-const store = createStore(reducer, initialState);
+const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+// const store = createStore(reducer, initialState);
 
 ReactDOM.render(
   <App store={store} />,

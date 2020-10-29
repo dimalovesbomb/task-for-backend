@@ -162,13 +162,13 @@ let App = props => {
             </ListItemIcon>
             <ListItemText primary="Something" />
           </ListItem>
-          <ListItem>
+          <ListItem button>
             <ListItemIcon>
                 <BarChartIcon />
               </ListItemIcon>
               <ListItemText primary="Another one" />
           </ListItem>
-          <ListItem>
+          <ListItem button>
             <ListItemIcon>
                 <BarChartIcon />
               </ListItemIcon>

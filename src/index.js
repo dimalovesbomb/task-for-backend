@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
 import 'fontsource-roboto';
 import App from './containers/app';
 import reducer from './reducers';
@@ -14,6 +15,8 @@ const store = createStore(reducer, initialState, composeEnhancers(applyMiddlewar
 // const store = createStore(reducer, initialState);
 
 ReactDOM.render(
-  <App store={store} />,
+  <BrowserRouter>
+    <App store={store} />
+  </BrowserRouter>,
   document.querySelector('.app')
 );

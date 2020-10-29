@@ -8,6 +8,9 @@ module.exports = {
     filename: 'build.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  devServer: {
+    historyApiFallback: true
+  },
   plugins: [
     new HtmlWebpackPlugin({
       filename: './index.html',
@@ -33,6 +36,10 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        use: ['url-loader?limit=100000'],
       },
       {
         test: /\.css$/i,

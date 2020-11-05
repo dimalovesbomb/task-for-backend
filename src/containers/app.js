@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
@@ -31,91 +30,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BarChartIcon from '@material-ui/icons/BarChart';
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
-  },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
-  },
-}));
+import { useStyles } from './styles';
+import { requestMenuItems } from '../actions';
 
 let App = props => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -123,6 +43,11 @@ let App = props => {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  useEffect( () => {
+    // props.requestMenuItems();
+    // console.log('useEffect');
+  });
 
   return (
     <div className={classes.root}>
@@ -162,30 +87,30 @@ let App = props => {
         </div>
         <Divider />
         <List>
-        <Link to="/something">
-          <ListItem button>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Something" />
-          </ListItem>
-          </Link>
-          <Link to="/anotherone">
-          <ListItem button>
-            <ListItemIcon>
-                <BarChartIcon />
+          <Link to="/something">
+            <ListItem button>
+              <ListItemIcon>
+                <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Another one" />
-          </ListItem>
-          </Link>
-          <Link to="/onemore">
-          <ListItem button>
+              <ListItemText primary="Something" />
+            </ListItem>
+            </Link>
+            <Link to="/anotherone">
+            <ListItem button>
               <ListItemIcon>
                   <BarChartIcon />
                 </ListItemIcon>
-                <ListItemText primary="One more" />
-          </ListItem>
-          </Link>
+                <ListItemText primary="Another one" />
+            </ListItem>
+            </Link>
+            <Link to="/onemore">
+            <ListItem button>
+                <ListItemIcon>
+                    <BarChartIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="One more" />
+            </ListItem>
+            </Link>
         </List>
         <Divider />
       </Drawer>
@@ -205,7 +130,7 @@ let App = props => {
               <Route path="/anotherone">
                 <Grid item xs={12} md={4} lg={3}>
                   <Paper className={fixedHeightPaper}>
-                    <h3>here goes something</h3>
+                    <h3>here goes anotherone</h3>
                     <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</span>
                   </Paper>
                 </Grid>
@@ -213,7 +138,7 @@ let App = props => {
               <Route path="/onemore">
                 <Grid item xs={12}>
                   <Paper className={classes.paper}>
-                    <h3>Here goes something</h3>
+                    <h3>Here goes onemore</h3>
                     <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</span>
                   </Paper>
                 </Grid>
@@ -228,13 +153,13 @@ let App = props => {
 
 function mapStateToProps(state) {
   return {
-    // places: state
+    state: state
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getPlace: city => dispatch(getPlace(city)),
+    requestMenuItems: () => dispatch(requestMenuItems())
     // removePlace: id => dispatch(removePlace(id)),
   }
 }

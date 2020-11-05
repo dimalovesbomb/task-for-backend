@@ -31,7 +31,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import { useStyles } from './styles';
-import { requestMenuItems } from '../actions';
+import { requestMenuItems, requestConfigurations } from '../actions';
+import { Configuration } from '../components/configurations';
 
 let App = props => {
   const classes = useStyles();
@@ -45,9 +46,8 @@ let App = props => {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   useEffect( () => {
-    // props.requestMenuItems();
-    // console.log('useEffect');
-  });
+    props.requestMenuItems();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -87,12 +87,12 @@ let App = props => {
         </div>
         <Divider />
         <List>
-          <Link to="/something">
+          <Link to="/configuration">
             <ListItem button>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Something" />
+              <ListItemText primary="Configuration" />
             </ListItem>
             </Link>
             <Link to="/anotherone">
@@ -119,11 +119,13 @@ let App = props => {
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
             <Grid container spacing={3}>
-              <Route path="/something">
-                <Grid item xs={12} md={8} lg={9}>
+              <Route path="/configuration">
+                <Grid item xs={12} md={8} lg={12}>
                   <Paper className={fixedHeightPaper}>
-                    <h3>here goes something</h3>
-                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</span>
+                    <Configuration 
+                      requestConfigurations={props.requestConfigurations}
+                      configurations={props.state.configuration}
+                    />
                   </Paper>
                 </Grid>
               </Route>
@@ -159,7 +161,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    requestMenuItems: () => dispatch(requestMenuItems())
+    requestMenuItems: () => dispatch(requestMenuItems()),
+    requestConfigurations: () => dispatch(requestConfigurations())
     // removePlace: id => dispatch(removePlace(id)),
   }
 }

@@ -10,7 +10,20 @@ const menuItems = (state = [], action) => {
     }
 }
 
-const reducer = combineReducers({menu: menuItems});
+const configuration = (state = [], action) => {
+    switch (action.type) {
+        case 'ADD_CONFIGURATIONS':
+            return [...action.payload];
+
+        default:
+            return state;
+    }
+}
+
+const reducer = combineReducers({
+    menu: menuItems,
+    configuration
+});
 // const reducer = menuItems;
 
 export default reducer;

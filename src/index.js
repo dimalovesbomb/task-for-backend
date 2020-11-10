@@ -8,13 +8,13 @@ import 'fontsource-roboto';
 import App from './containers/app';
 import reducer from './reducers';
 
-const initialState = [];
+const initialState = {};
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+// const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
 
-// const store = createStore(reducer, initialState, applyMiddleware(thunk));
+const store = createStore(reducer, initialState, applyMiddleware(thunk));
 
 ReactDOM.render(
   <BrowserRouter>

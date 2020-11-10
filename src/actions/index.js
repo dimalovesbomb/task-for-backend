@@ -41,7 +41,7 @@ function addConfigurations(payload) {
 
 export function requestLastElasticResults() {
     return async (dispatch) => {
-        const URL = 'http://78.155.197.183:9999/epz/analytics-aggregator/api/openapi';
+        const URL = 'http://78.155.197.183:9999/epz/analytics-aggregator/api/lastElasticResults';
         // const URL = './src/actions/array.json';
 
         return await fetch(URL)

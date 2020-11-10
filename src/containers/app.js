@@ -136,9 +136,12 @@ let App = props => {
               </Route>
               <Route path="/lastElasticResult">
                 <Grid item xs={12} md={8} lg={12}>
+                <Typography component="h2" className={classes.pageHeader}>
+                  Last Elastic Results
+                </Typography>
                   <Paper className={fixedHeightPaper}>
                     <LastElasticResults
-                      requestLastElasticResults={props.requestLastElasticResults}
+                      requestLastElasticResults={() => {props.requestLastElasticResults()}}
                       lastElasticResults={props.lastElasticResults}
                     />
                   </Paper>

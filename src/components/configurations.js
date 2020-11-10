@@ -14,9 +14,6 @@ const useStyles = makeStyles({
         width: '60vw',
         marginBottom: '20px'
     },
-    current: {
-
-    },
     top: {
         display: 'flex',
         justifyContent: 'space-between',

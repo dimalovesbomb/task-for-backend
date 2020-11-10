@@ -20,10 +20,10 @@ const configuration = (state = [], action) => {
     }
 }
 
-const lastElasticResults = (state = {}, action) => {
+const lastElasticResults = (state = [], action) => {
     switch (action.type) {
         case 'ADD_LAST_ELASTIC_RESULTS':
-            return action.payload;
+            return [...action.payload];
 
         default:
             return state;

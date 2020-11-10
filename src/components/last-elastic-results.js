@@ -1,19 +1,55 @@
-import { Typography } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
 
+const useStyles = makeStyles({
+    li: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '60vw', 
+        marginBottom: '20px'
+    },
+    string: {
+        marginBottom: '10px'
+    },
+    bold: {
+        fontWeight: 'bold'
+    },
+    code: {
+        display: 'flex',
+        flexWrap: 'wrap'
+    },
+    divider: {
+        marginTop: '5px'
+    }
+});
+
 export const LastElasticResults = props => {
-    const { info, components, paths } = props.lastElasticResults;
+    const classes = useStyles();
 
     useEffect( () => {
         props.requestLastElasticResults();
     }, []);
     
-    console.log(info); // if dynamic: info === undefined; if hardcoded: info === {} then info
+    console.log(props.lastElasticResults);
     return (
-            <div>
-                <Typography component="h3">HARD CODED WORKS</Typography>
-                <Typography component="h4">{info.title}DYNAMIC DOESNT</Typography>
-            </div>
+            <ul>
+                {
+                    props.lastElasticResults.map( item => {
+                        return (
+                            <li key={item.operationType} className={classes.li}>
+                                <span className={classes.string}>
+                                    <span className={classes.bold}>Operation type: </span>{item.operationType}
+                                </span>
+                                <div className={classes.string}>
+                                    <span className={classes.bold}>Operation result: </span>
+                                    <code className={classes.code}>{item.operationResult}</code>
+                                </div>
+                                <Divider />
+                            </li>
+                        )
+                    })
+                }
+            </ul>
     )
 }

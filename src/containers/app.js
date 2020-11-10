@@ -31,8 +31,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import { useStyles } from './styles';
-import { requestMenuItems, requestConfigurations } from '../actions';
+import { requestMenuItems, requestConfigurations, requestLastElasticResults } from '../actions';
 import { Configuration } from '../components/configurations';
+import { LastElasticResults } from '../components/last-elastic-results';
+
 
 let App = props => {
   const classes = useStyles();
@@ -45,9 +47,9 @@ let App = props => {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  useEffect( () => {
-    props.requestMenuItems();
-  }, []);
+  // useEffect( () => {
+  //   props.requestMenuItems();
+  // }, []);
 
   return (
     <div className={classes.root}>
@@ -95,12 +97,12 @@ let App = props => {
               <ListItemText primary="Configuration" />
             </ListItem>
             </Link>
-            <Link to="/anotherone">
+            <Link to="/lastElasticResult">
             <ListItem button>
               <ListItemIcon>
                   <BarChartIcon />
                 </ListItemIcon>
-                <ListItemText primary="Another one" />
+                <ListItemText primary="Last elastic results" />
             </ListItem>
             </Link>
             <Link to="/onemore">
@@ -121,19 +123,24 @@ let App = props => {
             <Grid container spacing={3}>
               <Route path="/configuration">
                 <Grid item xs={12} md={8} lg={12}>
+                <Typography component="h2" className={classes.pageHeader}>
+                  Configuration
+                </Typography>
                   <Paper className={fixedHeightPaper}>
                     <Configuration 
                       requestConfigurations={props.requestConfigurations}
-                      configurations={props.state.configuration}
+                      configurations={props.configuration}
                     />
                   </Paper>
                 </Grid>
               </Route>
-              <Route path="/anotherone">
-                <Grid item xs={12} md={4} lg={3}>
+              <Route path="/lastElasticResult">
+                <Grid item xs={12} md={8} lg={12}>
                   <Paper className={fixedHeightPaper}>
-                    <h3>here goes anotherone</h3>
-                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</span>
+                    <LastElasticResults
+                      requestLastElasticResults={props.requestLastElasticResults}
+                      lastElasticResults={props.lastElasticResults}
+                    />
                   </Paper>
                 </Grid>
               </Route>
@@ -155,14 +162,16 @@ let App = props => {
 
 function mapStateToProps(state) {
   return {
-    state: state
+    configuration: state.configuration,
+    lastElasticResults: state.lastElasticResults
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     requestMenuItems: () => dispatch(requestMenuItems()),
-    requestConfigurations: () => dispatch(requestConfigurations())
+    requestConfigurations: () => dispatch(requestConfigurations()),
+    requestLastElasticResults: () => dispatch(requestLastElasticResults())
     // removePlace: id => dispatch(removePlace(id)),
   }
 }

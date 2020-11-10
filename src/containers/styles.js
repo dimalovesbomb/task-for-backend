@@ -76,6 +76,11 @@ export const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
+  pageHeader: {
+    textAlign: 'center',
+    fontSize: '2rem',
+    marginBottom: '30px'
+  },
   fixedHeight: {
     height: '75vh',
   },

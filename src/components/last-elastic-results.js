@@ -1,6 +1,7 @@
 import { Divider, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
+import { formateJSON } from '../service/formate-json';
 
 const useStyles = makeStyles({
     li: {
@@ -36,6 +37,7 @@ export const LastElasticResults = props => {
             <ul>
                 {
                     props.lastElasticResults.map( item => {
+
                         return (
                             <li key={item.operationType} className={classes.li}>
                                 <span className={classes.string}>
@@ -43,7 +45,7 @@ export const LastElasticResults = props => {
                                 </span>
                                 <div className={classes.string}>
                                     <span className={classes.bold}>Operation result: </span>
-                                    <code className={classes.code}>{item.operationResult}</code>
+                                    <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
                                 </div>
                                 <Divider />
                             </li>

@@ -103,7 +103,7 @@ let App = props => {
               <ListItemIcon>
                   <BarChartIcon />
                 </ListItemIcon>
-                <ListItemText primary="Last aggregate elastic results" />
+                <ListItemText primary="Aggregate results" />
             </ListItem>
             </Link>
             <Link to="/lastWidgetElasticResult">
@@ -111,7 +111,7 @@ let App = props => {
                 <ListItemIcon>
                     <BarChartIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Last widget elastic results" />
+                  <ListItemText primary="Widget results" />
             </ListItem>
             </Link>
         </List>

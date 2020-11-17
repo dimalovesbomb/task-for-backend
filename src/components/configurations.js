@@ -2,6 +2,7 @@ import { Divider, Table, TableHead, TableRow, TableCell, Typography, TableBody }
 import { makeStyles } from '@material-ui/core/styles';
 import { TimerOffTwoTone } from '@material-ui/icons';
 import NotInterestedTwoToneIcon from '@material-ui/icons/NotInterestedTwoTone';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import React, { useEffect } from 'react'; 
 import formateDatetime from '../service/formate-datetime';
 
@@ -56,6 +57,10 @@ export const Configuration = props => {
             return <NotInterestedTwoToneIcon color="error" />;
         }
 
+        if (state === 'loaded') {
+            return <CheckCircleOutlineIcon color="primary" />
+        }
+
         if (state === '') {
             return null;
         }
@@ -65,7 +70,7 @@ export const Configuration = props => {
         <ul>
             {
                 configurations.map( item => {
-                    
+                    console.log(item.state);
                     return (
                         <li key={item.parameterName} className={classes.li}>
                             <div className={classes.top}>

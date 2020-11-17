@@ -20,9 +20,19 @@ const configuration = (state = [], action) => {
     }
 }
 
-const lastElasticResults = (state = [], action) => {
+const lastAggregateElasticResults = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_LAST_ELASTIC_RESULTS':
+        case 'ADD_LAST_AGGREGATE_ELASTIC_RESULTS':
+            return [...action.payload];
+
+        default:
+            return state;
+    }
+}
+
+const lastWidgetElasticResults = (state = [], action) => {
+    switch (action.type) {
+        case 'ADD_LAST_WIDGET_ELASTIC_RESULT':
             return [...action.payload];
 
         default:
@@ -33,7 +43,8 @@ const lastElasticResults = (state = [], action) => {
 const reducer = combineReducers({
     menu: menuItems,
     configuration,
-    lastElasticResults
+    lastAggregateElasticResults,
+    lastWidgetElasticResults
 });
 // const reducer = menuItems;
 export default reducer;

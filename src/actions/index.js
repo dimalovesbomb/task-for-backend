@@ -1,6 +1,7 @@
 const ADD_MENU_ITEMS = 'ADD_MENU_ITEMS';
 const ADD_CONFIGURATIONS = 'ADD_CONFIGURATIONS';
-const ADD_LAST_ELASTIC_RESULTS = 'ADD_LAST_ELASTIC_RESULTS';
+const ADD_LAST_AGGREGATE_ELASTIC_RESULTS = 'ADD_LAST_AGGREGATE_ELASTIC_RESULTS';
+const ADD_LAST_WIDGET_ELASTIC_RESULTS = 'ADD_LAST_WIDGET_ELASTIC_RESULT';
 
 export function requestMenuItems() {
     return async (dispatch) => {
@@ -39,9 +40,10 @@ function addConfigurations(payload) {
     }
 }
 
-export function requestLastElasticResults() {
+export function requestAggregateLastElasticResults(page, pageSize) {
     return async (dispatch) => {
-        const URL = 'http://78.155.197.183:9999/epz/analytics-aggregator/api/lastElasticResults';
+        console.log(page, pageSize);
+        const URL = `http://78.155.197.183:9999/epz/analytics-aggregator/api/lastAggregateElasticResults/${pageSize}/${page}`;
         // const URL = './src/actions/array.json';
 
         return await fetch(URL)
@@ -53,7 +55,25 @@ export function requestLastElasticResults() {
 
 function addLastElasticResults(payload) {
     return {
-        type: ADD_LAST_ELASTIC_RESULTS,
+        type: ADD_LAST_AGGREGATE_ELASTIC_RESULTS,
+        payload
+    }
+}
+
+export function requestLastWidgetElasticResults (page, pageSize) {
+    return async dispatch => {
+        const URL = `http://78.155.197.183:9999/epz/analytics-aggregator/api/lastWidgetElasticResults/${pageSize}/${page}`;
+
+        return await fetch(URL)
+            .then(res => res.json())
+            .then(payload => dispatch(addLastWidgetElasticResults(payload)))
+            .catch(error => console.error(error))
+    }
+}
+
+function addLastWidgetElasticResults(payload) {
+    return {
+        type: ADD_LAST_WIDGET_ELASTIC_RESULTS,
         payload
     }
 }

@@ -31,9 +31,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import { useStyles } from './styles';
-import { requestMenuItems, requestConfigurations, requestLastElasticResults } from '../actions';
+import { requestMenuItems, requestConfigurations, requestAggregateLastElasticResults, requestLastWidgetElasticResults } from '../actions';
 import { Configuration } from '../components/configurations';
-import { LastElasticResults } from '../components/last-elastic-results';
+import { LastAggregateElasticResults } from '../components/last-aggregate-elastic-results';
+import { LastWidgetElasticResults } from '../components/last-widget-elastic-results';
 
 
 let App = props => {
@@ -97,20 +98,20 @@ let App = props => {
               <ListItemText primary="Configuration" />
             </ListItem>
             </Link>
-            <Link to="/lastElasticResult">
+            <Link to="/lastAggregateElasticResult">
             <ListItem button>
               <ListItemIcon>
                   <BarChartIcon />
                 </ListItemIcon>
-                <ListItemText primary="Last elastic results" />
+                <ListItemText primary="Last aggregate elastic results" />
             </ListItem>
             </Link>
-            <Link to="/onemore">
+            <Link to="/lastWidgetElasticResult">
             <ListItem button>
                 <ListItemIcon>
                     <BarChartIcon />
                   </ListItemIcon>
-                  <ListItemText primary="One more" />
+                  <ListItemText primary="Last widget elastic results" />
             </ListItem>
             </Link>
         </List>
@@ -134,24 +135,29 @@ let App = props => {
                   </Paper>
                 </Grid>
               </Route>
-              <Route path="/lastElasticResult">
+              <Route path="/lastAggregateElasticResult">
                 <Grid item xs={12} md={8} lg={12}>
                 <Typography component="h2" className={classes.pageHeader}>
-                  Last Elastic Results
+                  Last Aggregate Elastic Results
                 </Typography>
                   <Paper className={fixedHeightPaper}>
-                    <LastElasticResults
-                      requestLastElasticResults={() => {props.requestLastElasticResults()}}
-                      lastElasticResults={props.lastElasticResults}
+                    <LastAggregateElasticResults
+                      requestAggregateLastElasticResults={props.requestAggregateLastElasticResults}
+                      lastAggregateElasticResults={props.lastAggregateElasticResults}
                     />
                   </Paper>
                 </Grid>
               </Route>
-              <Route path="/onemore">
-                <Grid item xs={12}>
-                  <Paper className={classes.paper}>
-                    <h3>Here goes onemore</h3>
-                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</span>
+              <Route path="/lastWidgetElasticResult">
+                <Grid item xs={12} md={8} lg={12}>
+                <Typography component="h2" className={classes.pageHeader}>
+                  Last Widget Elastic Results
+                </Typography>
+                  <Paper className={fixedHeightPaper}>
+                    <LastWidgetElasticResults
+                      requestLastWidgetElasticResults={props.requestLastWidgetElasticResults}
+                      lastWidgetElasticResults={props.lastWidgetElasticResults}
+                    />
                   </Paper>
                 </Grid>
               </Route>
@@ -166,7 +172,8 @@ let App = props => {
 function mapStateToProps(state) {
   return {
     configuration: state.configuration,
-    lastElasticResults: state.lastElasticResults
+    lastAggregateElasticResults: state.lastAggregateElasticResults,
+    lastWidgetElasticResults: state.lastWidgetElasticResults
   }
 }
 
@@ -174,7 +181,8 @@ function mapDispatchToProps(dispatch) {
   return {
     requestMenuItems: () => dispatch(requestMenuItems()),
     requestConfigurations: () => dispatch(requestConfigurations()),
-    requestLastElasticResults: () => dispatch(requestLastElasticResults())
+    requestAggregateLastElasticResults: (page, pageSize) => dispatch(requestAggregateLastElasticResults(page, pageSize)),
+    requestLastWidgetElasticResults: (page, pageSize) => dispatch(requestLastWidgetElasticResults(page, pageSize))
     // removePlace: id => dispatch(removePlace(id)),
   }
 }

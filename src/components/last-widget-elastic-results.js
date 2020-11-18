@@ -1,7 +1,7 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { formateJSON } from '../service/formate-json';
 
 const useStyles = makeStyles( theme => ({
@@ -40,8 +40,21 @@ const useStyles = makeStyles( theme => ({
 }));
 
 export const LastWidgetElasticResults = props => {
-    const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(0);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10); // default value
+    const [totalRecords, setTotalRecords] = useState(0);
+    //отвечает за количество страниц при выбранном pageSize
+    const [pagesCount, setPagesCount] = useState(1);
+
+    useEffect( () => {
+        fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastWidgetElasticResults/count')
+            .then( res => res.json())
+            .then( res => {
+                setTotalRecords(res);
+                setPagesCount(Math.ceil(res / pageSize));
+            });
+    }, []);
+    
 
     const classes = useStyles();
 
@@ -59,14 +72,29 @@ export const LastWidgetElasticResults = props => {
     }
 
     const selectPage = event => setPage(event.target.value);
-    const selectPageSize = event => setPageSize(event.target.value);
+    const selectPageSize = event => {
+        const newPageSize = event.target.value;
+        setPageSize(newPageSize);
+
+        const newPagesCount = Math.ceil(totalRecords / newPageSize);
+        setPagesCount(newPagesCount);
+        
+        setPage(Math.min(page, newPagesCount))
+    };
+
     const onLastElasticSubmit = event => {
         event.preventDefault();
         if (page && pageSize) {
-            props.requestLastWidgetElasticResults(page, pageSize);
+            props.requestAggregateLastElasticResults(page, pageSize);
         }
     };
-    
+
+    const addMenuItem = (count) => {
+        return [...Array(count).keys()].map( i => {
+            return <MenuItem key={i} value={i + 1}>{i + 1}</MenuItem>;
+        });
+    }
+
     return (
             <>
             <form className={classes.form__el} onSubmit={onLastElasticSubmit}>
@@ -75,9 +103,7 @@ export const LastWidgetElasticResults = props => {
                     <Select labelId="select-page"
                             value={page}
                             onChange={selectPage}>
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={5}>5</MenuItem>
+                                { addMenuItem(pagesCount) }
                     </Select>
                 </FormControl>
                 <FormControl className={classes.form__item}>
@@ -85,6 +111,7 @@ export const LastWidgetElasticResults = props => {
                     <Select labelId="select-page-size"
                             value={pageSize}
                             onChange={selectPageSize}>
+                                <MenuItem value={5}>5</MenuItem>
                                 <MenuItem value={10}>10</MenuItem>
                                 <MenuItem value={20}>20</MenuItem>
                                 <MenuItem value={50}>50</MenuItem>

@@ -35,11 +35,12 @@ import { requestMenuItems, requestConfigurations, requestAggregateLastElasticRes
 import { Configuration } from '../components/configurations';
 import { LastAggregateElasticResults } from '../components/last-aggregate-elastic-results';
 import { LastWidgetElasticResults } from '../components/last-widget-elastic-results';
+import { Home } from '../components/home';
 
 
 let App = props => {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -47,10 +48,6 @@ let App = props => {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  // useEffect( () => {
-  //   props.requestMenuItems();
-  // }, []);
 
   return (
     <div className={classes.root}>
@@ -97,23 +94,23 @@ let App = props => {
               </ListItemIcon>
               <ListItemText primary="Configuration" />
             </ListItem>
-            </Link>
-            <Link to="/lastAggregateElasticResult">
+          </Link>
+          <Link to="/lastAggregateElasticResult">
             <ListItem button>
               <ListItemIcon>
                   <BarChartIcon />
                 </ListItemIcon>
                 <ListItemText primary="Aggregate results" />
             </ListItem>
-            </Link>
-            <Link to="/lastWidgetElasticResult">
+          </Link>
+          <Link to="/lastWidgetElasticResult">
             <ListItem button>
                 <ListItemIcon>
                     <BarChartIcon />
                   </ListItemIcon>
                   <ListItemText primary="Widget results" />
             </ListItem>
-            </Link>
+          </Link>
         </List>
         <Divider />
       </Drawer>
@@ -122,6 +119,16 @@ let App = props => {
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
             <Grid container spacing={3}>
+              <Route path="/">
+                <Grid item xs={12} md={8} lg={12}>
+                  <Typography component="h2" className={classes.pageHeader}>
+                    Home
+                  </Typography>
+                  <Paper className={fixedHeightPaper}>
+                    <Home />
+                  </Paper>
+                </Grid>
+              </Route>
               <Route path="/configuration">
                 <Grid item xs={12} md={8} lg={12}>
                 <Typography component="h2" className={classes.pageHeader}>

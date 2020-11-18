@@ -64,7 +64,7 @@ let App = props => {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            Menu
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -119,7 +119,7 @@ let App = props => {
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
             <Grid container spacing={3}>
-              <Route path="/">
+              <Route exact path="/">
                 <Grid item xs={12} md={8} lg={12}>
                   <Typography component="h2" className={classes.pageHeader}>
                     Home

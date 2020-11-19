@@ -45,6 +45,7 @@ export const LastWidgetElasticResults = props => {
     const [totalRecords, setTotalRecords] = useState(0);
     //отвечает за количество страниц при выбранном pageSize
     const [pagesCount, setPagesCount] = useState(1);
+    console.log(props);
 
     useEffect( () => {
         fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastWidgetElasticResults/count')
@@ -85,7 +86,7 @@ export const LastWidgetElasticResults = props => {
     const onLastElasticSubmit = event => {
         event.preventDefault();
         if (page && pageSize) {
-            props.requestAggregateLastElasticResults(page, pageSize);
+            props.requestLastWidgetElasticResults(page, pageSize);
         }
     };
 
@@ -121,7 +122,7 @@ export const LastWidgetElasticResults = props => {
                         type="submit"
                         variant="outlined"
                         color="primary"
-                        endIcon={<SendIcon />}>Send</Button>
+                        endIcon={<SendIcon />}>Request</Button>
             </form>
             <Divider className={classes.divider} />
             

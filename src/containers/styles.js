@@ -81,6 +81,9 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: '2rem',
     marginBottom: '30px'
   },
+  home: {
+    color: '#edf3f7'
+  },
   fixedHeight: {
     height: '75vh',
   },

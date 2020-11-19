@@ -6,10 +6,17 @@ import  { Link } from 'react-router-dom';
 
 const useStyles = makeStyles( theme => ({
     home: {
+        position: 'relative',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%'
+    },
+    randomPic: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        width: 200
     }
 }))
 
@@ -18,6 +25,7 @@ export const Home = props => {
 
     return (
         <div className={classes.home}>
+            <img className={classes.randomPic} src={"src/cat.jpg"}></img>
             <List>
                 <Divider />
                 <Link to="/configuration">

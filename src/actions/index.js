@@ -42,7 +42,6 @@ function addConfigurations(payload) {
 
 export function requestAggregateLastElasticResults(page, pageSize) {
     return async (dispatch) => {
-        console.log(page, pageSize);
         const URL = `http://78.155.197.183:9999/epz/analytics-aggregator/api/lastAggregateElasticResults/${pageSize}/${page}`;
         // const URL = './src/actions/array.json';
 

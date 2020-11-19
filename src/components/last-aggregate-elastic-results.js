@@ -1,7 +1,10 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import history from 'history/browser';
+import { useLocation } from 'react-router-dom';
 import { formateJSON } from '../service/formate-json';
 
 const useStyles = makeStyles( theme => ({
@@ -24,10 +27,13 @@ const useStyles = makeStyles( theme => ({
     divider: {
         marginTop: '15px'
     },
+    pagination: {
+        margin: 'auto 0'
+    },
     form__el: {
         display: 'flex',
         justifyContent: 'space-between',
-        width: 500
+        width: 600
     },
     form__item: {
         margin: theme.spacing(1),
@@ -46,6 +52,8 @@ export const LastAggregateElasticResults = props => {
     //отвечает за количество страниц при выбранном pageSize
     const [pagesCount, setPagesCount] = useState(1);
 
+    // console.log(history);
+
     useEffect( () => {
         fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastAggregateElasticResults/count')
             .then( res => res.json())
@@ -53,10 +61,22 @@ export const LastAggregateElasticResults = props => {
                 setTotalRecords(res);
                 setPagesCount(Math.ceil(res / pageSize));
             });
+        setInitParams();
+        onLastElasticSubmit(null);
     }, []);
     
 
     const classes = useStyles();
+    const location = useLocation();
+
+    const setInitParams = () => {
+        const searchParams = new URLSearchParams(location.search);
+        const pageNumber = parseInt(searchParams.get('pageQ'));
+        const pageSizeNumber = parseInt(searchParams.get('pageSizeQ'));
+ 
+        setPage(pageNumber);
+        setPageSize(pageSizeNumber);
+    }
 
     const formateDatetime = timestamp => {
         const formatter = {
@@ -71,41 +91,52 @@ export const LastAggregateElasticResults = props => {
         return new Date(+timestamp).toLocaleString('ru', formatter);
     }
 
-    const selectPage = event => setPage(event.target.value);
+    const selectPage = (event, value) => {
+        setPage(value);
+        onLastElasticSubmit(null);
+        updateUrl(value, pageSize);
+    };
     const selectPageSize = event => {
         const newPageSize = event.target.value;
         setPageSize(newPageSize);
 
         const newPagesCount = Math.ceil(totalRecords / newPageSize);
         setPagesCount(newPagesCount);
-        
-        setPage(Math.min(page, newPagesCount))
+
+        const newPage = Math.min(page, newPagesCount);
+        setPage(newPage);
+
+        updateUrl(newPage, newPageSize);
+    };
+
+    const updateUrl = (page, pageSize) => {
+        history.push({
+            pathname: '/lastAggregateElasticResult',
+            search: `?pageQ=${page}&pageSizeQ=${pageSize}`,
+            state: { page, pageSize }
+        });
     };
 
     const onLastElasticSubmit = event => {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
+
         if (page && pageSize) {
             props.requestAggregateLastElasticResults(page, pageSize);
         }
     };
 
-    const addMenuItem = (count) => {
-        return [...Array(count).keys()].map( i => {
-            return <MenuItem key={i} value={i + 1}>{i + 1}</MenuItem>;
-        });
-    }
-
     return (
             <>
             <form className={classes.form__el} onSubmit={onLastElasticSubmit}>
-                <FormControl className={classes.form__item}>
-                    <InputLabel id="select-page">Page</InputLabel>
-                    <Select labelId="select-page"
-                            value={page}
-                            onChange={selectPage}>
-                                { addMenuItem(pagesCount) }
-                    </Select>
-                </FormControl>
+                <Pagination className={classes.pagination}
+                            count={pagesCount}
+                            siblingCount={0}
+                            page={page}
+                            onChange={selectPage}
+                            variant="outlined"
+                            shape="rounded" />
                 <FormControl className={classes.form__item}>
                     <InputLabel id="select-page-size">Page size</InputLabel>
                     <Select labelId="select-page-size"
@@ -121,7 +152,7 @@ export const LastAggregateElasticResults = props => {
                         type="submit"
                         variant="outlined"
                         color="primary"
-                        endIcon={<SendIcon />}>Send</Button>
+                        endIcon={<SendIcon />}>Request</Button>
             </form>
             <Divider className={classes.divider} />
             

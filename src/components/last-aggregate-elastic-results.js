@@ -46,10 +46,9 @@ const useStyles = makeStyles( theme => ({
 }));
 
 export const LastAggregateElasticResults = props => {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(1); // default value
     const [pageSize, setPageSize] = useState(10); // default value
     const [totalRecords, setTotalRecords] = useState(0);
-    //отвечает за количество страниц при выбранном pageSize
     const [pagesCount, setPagesCount] = useState(1);
 
     useEffect( () => {
@@ -60,7 +59,7 @@ export const LastAggregateElasticResults = props => {
                 setPagesCount(Math.ceil(res / pageSize));
             });
         setInitParams();
-        onLastElasticSubmit(null);
+        onFormSubmit(null);
     }, []);
     
 
@@ -71,9 +70,11 @@ export const LastAggregateElasticResults = props => {
         const searchParams = new URLSearchParams(location.search);
         const pageNumber = parseInt(searchParams.get('pageQ'));
         const pageSizeNumber = parseInt(searchParams.get('pageSizeQ'));
- 
-        setPage(pageNumber);
-        setPageSize(pageSizeNumber);
+        // if no query in $location - keep default values of $page and $pageSize
+        if (!isNaN(pageNumber) && !isNaN(pageSizeNumber)) {
+            setPageSize(pageNumber);
+            setPageSize(pageSizeNumber);
+        }
     }
 
     const formateDatetime = timestamp => {
@@ -91,7 +92,7 @@ export const LastAggregateElasticResults = props => {
 
     const selectPage = (event, value) => {
         setPage(value);
-        onLastElasticSubmit(null);
+        onFormSubmit(null);
         updateUrl(value, pageSize);
     };
     const selectPageSize = event => {
@@ -115,7 +116,7 @@ export const LastAggregateElasticResults = props => {
         });
     };
 
-    const onLastElasticSubmit = event => {
+    const onFormSubmit = event => {
         if (event) {
             event.preventDefault();
         }
@@ -127,7 +128,7 @@ export const LastAggregateElasticResults = props => {
 
     return (
             <>
-            <form className={classes.form__el} onSubmit={onLastElasticSubmit}>
+            <form className={classes.form__el} onSubmit={onFormSubmit}>
                 <Pagination className={classes.pagination}
                             count={pagesCount}
                             siblingCount={0}

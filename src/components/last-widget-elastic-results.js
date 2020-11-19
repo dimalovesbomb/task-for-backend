@@ -1,7 +1,10 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import history from 'history/browser';
+import { useLocation } from 'react-router-dom';
 import { formateJSON } from '../service/formate-json';
 
 const useStyles = makeStyles( theme => ({
@@ -24,10 +27,13 @@ const useStyles = makeStyles( theme => ({
     divider: {
         marginTop: '15px'
     },
+    pagination: {
+        margin: 'auto 0'
+    },
     form__el: {
         display: 'flex',
         justifyContent: 'space-between',
-        width: 500
+        width: 600
     },
     form__item: {
         margin: theme.spacing(1),
@@ -40,24 +46,36 @@ const useStyles = makeStyles( theme => ({
 }));
 
 export const LastWidgetElasticResults = props => {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(1); // default value
     const [pageSize, setPageSize] = useState(10); // default value
     const [totalRecords, setTotalRecords] = useState(0);
-    //отвечает за количество страниц при выбранном pageSize
     const [pagesCount, setPagesCount] = useState(1);
-    console.log(props);
 
     useEffect( () => {
-        fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastWidgetElasticResults/count')
+        fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastAggregateElasticResults/count')
             .then( res => res.json())
             .then( res => {
                 setTotalRecords(res);
                 setPagesCount(Math.ceil(res / pageSize));
             });
+        setInitParams();
+        onFormSubmit(null);
     }, []);
     
 
     const classes = useStyles();
+    const location = useLocation();
+
+    const setInitParams = () => {
+        const searchParams = new URLSearchParams(location.search); // IM SORRY BUT REACT ROUTER'S useParams IS SHIT
+        const pageNumber = parseInt(searchParams.get('pageQ'));
+        const pageSizeNumber = parseInt(searchParams.get('pageSizeQ'));
+        // if no query in $location - keep default values of $page and $pageSize
+        if (!isNaN(pageNumber) && !isNaN(pageSizeNumber)) {
+            setPage(pageNumber);
+            setPageSize(pageSizeNumber);
+        }
+    }
 
     const formateDatetime = timestamp => {
         const formatter = {
@@ -72,41 +90,52 @@ export const LastWidgetElasticResults = props => {
         return new Date(+timestamp).toLocaleString('ru', formatter);
     }
 
-    const selectPage = event => setPage(event.target.value);
+    const selectPage = (event, value) => {
+        setPage(value);
+        onFormSubmit(null);
+        updateUrl(value, pageSize);
+    };
     const selectPageSize = event => {
         const newPageSize = event.target.value;
         setPageSize(newPageSize);
 
         const newPagesCount = Math.ceil(totalRecords / newPageSize);
         setPagesCount(newPagesCount);
-        
-        setPage(Math.min(page, newPagesCount))
+
+        const newPage = Math.min(page, newPagesCount);
+        setPage(newPage);
+
+        updateUrl(newPage, newPageSize);
     };
 
-    const onLastElasticSubmit = event => {
-        event.preventDefault();
+    const updateUrl = (page, pageSize) => {
+        history.push({
+            pathname: '/lastWidgetElasticResult',
+            search: `?pageQ=${page}&pageSizeQ=${pageSize}`,
+            state: { page, pageSize }
+        });
+    };
+
+    const onFormSubmit = event => {
+        if (event) {
+            event.preventDefault();
+        }
+
         if (page && pageSize) {
             props.requestLastWidgetElasticResults(page, pageSize);
         }
     };
 
-    const addMenuItem = (count) => {
-        return [...Array(count).keys()].map( i => {
-            return <MenuItem key={i} value={i + 1}>{i + 1}</MenuItem>;
-        });
-    }
-
     return (
             <>
-            <form className={classes.form__el} onSubmit={onLastElasticSubmit}>
-                <FormControl className={classes.form__item}>
-                    <InputLabel id="select-page">Page</InputLabel>
-                    <Select labelId="select-page"
-                            value={page}
-                            onChange={selectPage}>
-                                { addMenuItem(pagesCount) }
-                    </Select>
-                </FormControl>
+            <form className={classes.form__el} onSubmit={onFormSubmit}>
+                <Pagination className={classes.pagination}
+                            count={pagesCount}
+                            siblingCount={0}
+                            page={page}
+                            onChange={selectPage}
+                            variant="outlined"
+                            shape="rounded" />
                 <FormControl className={classes.form__item}>
                     <InputLabel id="select-page-size">Page size</InputLabel>
                     <Select labelId="select-page-size"
@@ -122,7 +151,7 @@ export const LastWidgetElasticResults = props => {
                         type="submit"
                         variant="outlined"
                         color="primary"
-                        endIcon={<SendIcon />}>Request</Button>
+                        endIcon={<RefreshIcon />}>Refresh</Button>
             </form>
             <Divider className={classes.divider} />
             

@@ -72,7 +72,7 @@ export const LastAggregateElasticResults = props => {
         const pageSizeNumber = parseInt(searchParams.get('pageSizeQ'));
         // if no query in $location - keep default values of $page and $pageSize
         if (!isNaN(pageNumber) && !isNaN(pageSizeNumber)) {
-            setPageSize(pageNumber);
+            setPage(pageNumber);
             setPageSize(pageSizeNumber);
         }
     }

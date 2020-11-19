@@ -1,5 +1,5 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
@@ -51,8 +51,6 @@ export const LastAggregateElasticResults = props => {
     const [totalRecords, setTotalRecords] = useState(0);
     //отвечает за количество страниц при выбранном pageSize
     const [pagesCount, setPagesCount] = useState(1);
-
-    // console.log(history);
 
     useEffect( () => {
         fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastAggregateElasticResults/count')
@@ -152,7 +150,7 @@ export const LastAggregateElasticResults = props => {
                         type="submit"
                         variant="outlined"
                         color="primary"
-                        endIcon={<SendIcon />}>Request</Button>
+                        endIcon={<RefreshIcon />}>Refresh</Button>
             </form>
             <Divider className={classes.divider} />
             

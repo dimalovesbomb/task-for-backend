@@ -5,7 +5,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import NotInterestedTwoToneIcon from '@material-ui/icons/NotInterestedTwoTone';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import React, { useEffect } from 'react'; 
-import formateDatetime from '../service/formate-datetime';
+import { formateDatetimeUTC } from '../service/formate-datetime';
 import { downloadYaml } from '../yaml-parser/json2yaml';
 
 const useStyles = makeStyles({
@@ -104,7 +104,7 @@ export const Configuration = props => {
                                 <span className={classes.bold}>Description: </span>{item.description}
                             </span>
                             <span>
-                                <span className={classes.bold}>Last consul query time: </span>{formateDatetime(item.lastConsulQueryTime)}
+                                <span className={classes.bold}>Last consul query time: </span>{formateDatetimeUTC(item.lastConsulQueryTime)}
                             </span>
                             <Divider className={classes.divider} />
                         </li>

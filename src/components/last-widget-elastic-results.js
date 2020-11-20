@@ -1,13 +1,14 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import {OpenInBrowser} from '@material-ui/icons';
+import { OpenInBrowser } from '@material-ui/icons';
 import CloseIcon from '@material-ui/icons/Close';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import { Details } from './details';
 import history from 'history/browser';
 import { useLocation } from 'react-router-dom';
-import { formateJSON } from '../service/formate-json';
+import { formateDatetimeStamp } from '../service/formate-datetime';
 
 const useStyles = makeStyles( theme => ({
     li: {
@@ -18,13 +19,6 @@ const useStyles = makeStyles( theme => ({
     },
     string: {
         marginBottom: '10px'
-    },
-    bold: {
-        fontWeight: 'bold'
-    },
-    code: {
-        display: 'flex',
-        flexWrap: 'wrap'
     },
     divider: {
         marginTop: '15px'
@@ -45,16 +39,10 @@ const useStyles = makeStyles( theme => ({
         height: 30,
         margin: 'auto 0'
     },
-    json: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '30vw'
-    },
     modalItems: {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'visible !important',
         width: '100%',
         height: '100%',
     },
@@ -67,6 +55,9 @@ export const LastWidgetElasticResults = props => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [pagesCount, setPagesCount] = useState(1);
 
+    const classes = useStyles();
+    const location = useLocation();
+
     useEffect( () => {
         fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastWidgetElasticResults/count')
             .then( res => res.json())
@@ -77,10 +68,6 @@ export const LastWidgetElasticResults = props => {
         setInitParams();
         onFormSubmit(null);
     }, []);
-    
-
-    const classes = useStyles();
-    const location = useLocation();
 
     const setInitParams = () => {
         const searchParams = new URLSearchParams(location.search);
@@ -91,19 +78,6 @@ export const LastWidgetElasticResults = props => {
             setPage(pageNumber);
             setPageSize(pageSizeNumber);
         }
-    }
-
-    const formateDatetime = timestamp => {
-        const formatter = {
-            day: 'numeric',
-            month: 'numeric',
-            year: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        };
-
-        return new Date(+timestamp).toLocaleString('ru', formatter);
     }
 
     const selectPage = (event, value) => {
@@ -184,7 +158,7 @@ export const LastWidgetElasticResults = props => {
                                         <span className={classes.bold}>Operation type: </span>{item.operationType}
                                 </span>
                                 <span className={classes.string}>
-                                        <span className={classes.bold}>Operation time: </span>{formateDatetime(item.operationTimestamp)}
+                                        <span className={classes.bold}>Operation time: </span>{formateDatetimeStamp(item.operationTimestamp)}
                                 </span>
 
                                 {
@@ -193,32 +167,18 @@ export const LastWidgetElasticResults = props => {
                                             onClick={openModal}
                                             variant="outlined"
                                             color="primary"
-                                            endIcon={<OpenInBrowser />}>Open</Button>
+                                            endIcon={<OpenInBrowser />}>Open details</Button>
                                         :
-                                        null
-                                }
-
-                                {
-                                    showModal ? 
                                         <div className={classes.modalItems}>
-                                            <div className={classes.json}>
-                                                <div>
-                                                    <span className={classes.bold}>Operation request: </span>
-                                                    <pre className={classes.code}>{formateJSON(item.operationRequest)}</pre>
-                                                </div>
-                                                <div className={classes.string}>
-                                                    <span className={classes.bold}>Operation result: </span>
-                                                    <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
-                                                </div>
-                                            </div>
+                                            <Details operationRequest={item.operationRequest} 
+                                                operationResult={item.operationResult}/>
+
                                             <Button className={classes.button}
                                                 onClick={closeModal}
                                                 variant="outlined"
                                                 color="secondary"
                                                 endIcon={<CloseIcon />}>Close</Button>
                                         </div>
-                                        :
-                                        null
                                 }
                                 <Divider className={classes.divider} />
                             </li>

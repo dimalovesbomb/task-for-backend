@@ -1,12 +1,19 @@
-import { Divider, Table, TableHead, TableRow, TableCell, Typography, TableBody } from '@material-ui/core';
+import { Divider, Button, Table, TableHead, TableRow, TableCell, Typography, TableBody } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { TimerOffTwoTone } from '@material-ui/icons';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import NotInterestedTwoToneIcon from '@material-ui/icons/NotInterestedTwoTone';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import React, { useEffect } from 'react'; 
 import formateDatetime from '../service/formate-datetime';
+import { downloadYaml } from '../yaml-parser/json2yaml';
 
 const useStyles = makeStyles({
+    ul: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+    },
     li: {
         display: 'flex',
         flexDirection: 'column',
@@ -31,7 +38,12 @@ const useStyles = makeStyles({
     },
     divider: {
         marginTop: '5px'
-    }
+    },
+    button: {
+        height: 30,
+        margin: 'auto 0',
+        marginBottom: 20
+    },
 });
   
 
@@ -67,10 +79,14 @@ export const Configuration = props => {
     }
 
     return (
-        <ul>
+        <ul className={classes.ul}>
+            <Button className={classes.button}
+                onClick={ () => downloadYaml(configurations) }
+                variant="outlined"
+                color="primary"
+                endIcon={<GetAppIcon />}>Download .yml file</Button>
             {
                 configurations.map( item => {
-                    console.log(item.state);
                     return (
                         <li key={item.parameterName} className={classes.li}>
                             <div className={classes.top}>

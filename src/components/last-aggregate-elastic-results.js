@@ -2,15 +2,12 @@ import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@mat
 import RefreshIcon from '@material-ui/icons/Refresh';
 import {OpenInBrowser} from '@material-ui/icons';
 import CloseIcon from '@material-ui/icons/Close';
-import GetAppIcon from '@material-ui/icons/GetApp';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import history from 'history/browser';
 import { useLocation } from 'react-router-dom';
 import { formateJSON } from '../service/formate-json';
-import { downloadYaml } from '../yaml-parser/json2yaml';
-
 
 const useStyles = makeStyles( theme => ({
     li: {
@@ -44,22 +41,14 @@ const useStyles = makeStyles( theme => ({
         margin: theme.spacing(1),
         minWidth: 120
     },
-    buttonsArea: {
-        display: 'flex',
-        justifyContent: 'space-around'
-    },
     button: {
         height: 30,
         margin: 'auto 0'
     },
-    modal: {
-        position: 'absolute',
-        top: '15%',
-        left: '15%',
-        width: '75vw',
-        height: '80vh',
-        border: '1px solid black',
-        overflowY: 'visible !important'
+    json: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '50vw'
     },
     modalItems: {
         position: 'relative',
@@ -212,26 +201,21 @@ export const LastAggregateElasticResults = props => {
                                 {
                                     showModal ? 
                                         <div className={classes.modalItems}>
-                                            <div>
-                                                <span className={classes.bold}>Operation request: </span>
-                                                <pre className={classes.code}>{formateJSON(item.operationRequest)}</pre>
+                                            <div className={classes.json}>
+                                                <div>
+                                                    <span className={classes.bold}>Operation request: </span>
+                                                    <pre className={classes.code}>{formateJSON(item.operationRequest)}</pre>
+                                                </div>
+                                                <div className={classes.string}>
+                                                    <span className={classes.bold}>Operation result: </span>
+                                                    <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
+                                                </div>
                                             </div>
-                                            <div className={classes.string}>
-                                                <span className={classes.bold}>Operation result: </span>
-                                                <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
-                                            </div>
-                                            <div className={classes.buttonsArea}>
-                                                <Button className={classes.button}
-                                                    onClick={ () => downloadYaml(item) }
-                                                    variant="outlined"
-                                                    color="primary"
-                                                    endIcon={<GetAppIcon />}>Download .yml file</Button>
-                                                <Button className={classes.button}
-                                                    onClick={closeModal}
-                                                    variant="outlined"
-                                                    color="secondary"
-                                                    endIcon={<CloseIcon />}>Close</Button>
-                                            </div>
+                                            <Button className={classes.button}
+                                                onClick={closeModal}
+                                                variant="outlined"
+                                                color="secondary"
+                                                endIcon={<CloseIcon />}>Close</Button>
                                         </div>
                                         :
                                         null

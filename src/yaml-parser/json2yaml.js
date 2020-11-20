@@ -1,11 +1,8 @@
-// import { jsObjectToJSON } from '../service/formate-object';
-
 let YAML = require('json2yaml')
     , ymlText
     ;
 
 export function downloadYaml(object) {
-    // const formatedJSON = jsObjectToJSON(object);
     const element = document.createElement('a');
     ymlText = YAML.stringify(object);
     const blob = new Blob([ymlText], {type: 'text/yaml'});
@@ -13,7 +10,7 @@ export function downloadYaml(object) {
     const fileUrl = URL.createObjectURL(blob);
 
     element.setAttribute('href', fileUrl);
-    element.setAttribute('download', `${object.operationType}.yml`);
+    element.setAttribute('download', 'configurations.yml');
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();

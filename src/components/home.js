@@ -43,8 +43,6 @@ export const Home = props => {
             .catch(error => console.error(error));
     }, []);
 
-    console.log(meme);
-
     return (
         <div className={classes.home}>
             <div className={classes.randomPic}>

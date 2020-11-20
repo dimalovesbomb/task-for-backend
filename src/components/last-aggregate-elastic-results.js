@@ -1,11 +1,14 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import {OpenInBrowser} from '@material-ui/icons';
+import CloseIcon from '@material-ui/icons/Close';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import history from 'history/browser';
 import { useLocation } from 'react-router-dom';
 import { formateJSON } from '../service/formate-json';
+
 
 const useStyles = makeStyles( theme => ({
     li: {
@@ -42,10 +45,33 @@ const useStyles = makeStyles( theme => ({
     button: {
         height: 30,
         margin: 'auto 0'
+    },
+    modal: {
+        position: 'absolute',
+        top: '15%',
+        left: '15%',
+        width: '75vw',
+        height: '80vh',
+        border: '1px solid black',
+        overflowY: 'visible !important'
+    },
+    modalItems: {
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'visible !important',
+        width: '100%',
+        height: '100%',
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 20,
+        right: 20
     }
 }));
 
 export const LastAggregateElasticResults = props => {
+    const [showModal, setShowModal] = useState(false);
     const [page, setPage] = useState(1); // default value
     const [pageSize, setPageSize] = useState(10); // default value
     const [totalRecords, setTotalRecords] = useState(0);
@@ -126,6 +152,9 @@ export const LastAggregateElasticResults = props => {
         }
     };
 
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
+
     return (
             <>
             <form className={classes.form__el} onSubmit={onFormSubmit}>
@@ -162,20 +191,44 @@ export const LastAggregateElasticResults = props => {
                         return (
                             <li key={item.operationTimestamp} className={classes.li}>
                                 <span className={classes.string}>
-                                    <span className={classes.bold}>Operation type: </span>{item.operationType}
+                                        <span className={classes.bold}>Operation type: </span>{item.operationType}
                                 </span>
                                 <span className={classes.string}>
-                                    <span className={classes.bold}>Operation time: </span>{formateDatetime(item.operationTimestamp)}
+                                        <span className={classes.bold}>Operation time: </span>{formateDatetime(item.operationTimestamp)}
                                 </span>
-                                <div>
-                                    <span className={classes.bold}>Operation request: </span>
-                                    <pre className={classes.code}>{formateJSON(item.operationRequest)}</pre>
-                                </div>
-                                <div className={classes.string}>
-                                    <span className={classes.bold}>Operation result: </span>
-                                    <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
-                                </div>
-                                <Divider />
+
+                                {
+                                    !showModal ?
+                                        <Button className={classes.button}
+                                            onClick={openModal}
+                                            variant="outlined"
+                                            color="primary"
+                                            endIcon={<OpenInBrowser />}>Open</Button>
+                                        :
+                                        null
+                                }
+
+                                {
+                                    showModal ? 
+                                        <div className={classes.modalItems}>
+                                            <div>
+                                                <span className={classes.bold}>Operation request: </span>
+                                                <pre className={classes.code}>{formateJSON(item.operationRequest)}</pre>
+                                            </div>
+                                            <div className={classes.string}>
+                                                <span className={classes.bold}>Operation result: </span>
+                                                <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
+                                            </div>
+                                            <Button className={classes.button}
+                                                onClick={closeModal}
+                                                variant="outlined"
+                                                color="primary"
+                                                endIcon={<CloseIcon />}>Close</Button>
+                                        </div>
+                                        :
+                                        null
+                                }
+                                <Divider className={classes.divider} />
                             </li>
                         )
                     })

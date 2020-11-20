@@ -2,12 +2,14 @@ import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@mat
 import RefreshIcon from '@material-ui/icons/Refresh';
 import {OpenInBrowser} from '@material-ui/icons';
 import CloseIcon from '@material-ui/icons/Close';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import history from 'history/browser';
 import { useLocation } from 'react-router-dom';
 import { formateJSON } from '../service/formate-json';
+import { downloadYaml } from '../yaml-parser/json2yaml';
 
 
 const useStyles = makeStyles( theme => ({
@@ -42,6 +44,10 @@ const useStyles = makeStyles( theme => ({
         margin: theme.spacing(1),
         minWidth: 120
     },
+    buttonsArea: {
+        display: 'flex',
+        justifyContent: 'space-around'
+    },
     button: {
         height: 30,
         margin: 'auto 0'
@@ -63,11 +69,6 @@ const useStyles = makeStyles( theme => ({
         width: '100%',
         height: '100%',
     },
-    closeButton: {
-        position: 'absolute',
-        top: 20,
-        right: 20
-    }
 }));
 
 export const LastAggregateElasticResults = props => {
@@ -96,7 +97,7 @@ export const LastAggregateElasticResults = props => {
         const searchParams = new URLSearchParams(location.search);
         const pageNumber = parseInt(searchParams.get('pageQ'));
         const pageSizeNumber = parseInt(searchParams.get('pageSizeQ'));
-        // if no query in $location - keep default values of $page and $pageSize
+        // if there's no query params in $location - keep default values of $page and $pageSize
         if (!isNaN(pageNumber) && !isNaN(pageSizeNumber)) {
             setPage(pageNumber);
             setPageSize(pageSizeNumber);
@@ -219,11 +220,18 @@ export const LastAggregateElasticResults = props => {
                                                 <span className={classes.bold}>Operation result: </span>
                                                 <pre className={classes.code}>{formateJSON(item.operationResult)}</pre>
                                             </div>
-                                            <Button className={classes.button}
-                                                onClick={closeModal}
-                                                variant="outlined"
-                                                color="primary"
-                                                endIcon={<CloseIcon />}>Close</Button>
+                                            <div className={classes.buttonsArea}>
+                                                <Button className={classes.button}
+                                                    onClick={ () => downloadYaml(item) }
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    endIcon={<GetAppIcon />}>Download .yml file</Button>
+                                                <Button className={classes.button}
+                                                    onClick={closeModal}
+                                                    variant="outlined"
+                                                    color="secondary"
+                                                    endIcon={<CloseIcon />}>Close</Button>
+                                            </div>
                                         </div>
                                         :
                                         null

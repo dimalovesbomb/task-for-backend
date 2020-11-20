@@ -22,8 +22,9 @@ const useStyles = makeStyles( theme => ({
         height: 400
     },
     'randomPic img': {
-        width: '25%',
-        height: '25%'
+        verticalAlign: 'top',
+        maxWidth: '25%',
+        height: 'auto'
     },
     randomLink: {
         fontSize: 12

@@ -12,13 +12,12 @@ const useStyles = makeStyles({
     ul: {
         display: 'flex',
         justifyContent: 'center',
-        flexWrap: 'wrap'
+        flexDirection: 'column'
     },
     li: {
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
-        position: 'relative',
         width: '60vw',
         marginBottom: '20px'
     },

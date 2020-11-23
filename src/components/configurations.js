@@ -1,4 +1,4 @@
-import { Divider, Button, Table, TableHead, TableRow, TableCell, Typography, TableBody } from '@material-ui/core';
+import { Divider, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { TimerOffTwoTone } from '@material-ui/icons';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -31,9 +31,6 @@ const useStyles = makeStyles({
     },
     icon: {
         fontSize: 'medium'
-    },
-    alert: {
-        backgroundColor: 'red'
     },
     divider: {
         marginTop: '5px'
@@ -113,34 +110,3 @@ export const Configuration = props => {
         </ul>
     )
 }
-
-{/* <Table className={classes.table}>
-            <TableHead>
-                <TableRow>
-                    <TableCell className={classes.tableCellShort}>Current value</TableCell>
-                    <TableCell className={classes.tableCellShort}>Default value</TableCell>
-                    <TableCell className={classes.tableCellLong}>Description</TableCell>
-                    <TableCell className={classes.tableCellLong}>Last consul query time</TableCell>
-                    <TableCell className={classes.tableCellLong}>Parameter name</TableCell>
-                    <TableCell className={classes.tableCellShort}>State</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {
-                    configurations.map( (section, id) => {
-                        return (
-                            <TableRow key={id}>
-                                <TableCell className={classes.tableCellShort}>{section.currentValue}</TableCell>
-                                <TableCell className={classes.tableCellShort}>{section.defaultValue}</TableCell>
-                                <TableCell className={classes.tableCellLong}>{section.description}</TableCell>
-                                <TableCell className={classes.tableCellLong}>{formateDatetime(section.lastConsulQueryTime)}</TableCell>
-                                <TableCell className={classes.tableCellLong}>{section.parameterName}</TableCell>
-                                <TableCell className={classes.tableCellShort}>{section.state}</TableCell>
-                            </TableRow>
-                        )
-                    })
-                }
-            </TableBody>
-            <Divider></Divider>
-        </Table> */}
-

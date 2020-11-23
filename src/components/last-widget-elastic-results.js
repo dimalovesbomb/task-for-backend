@@ -1,25 +1,16 @@
 import { Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import { OpenInBrowser } from '@material-ui/icons';
-import CloseIcon from '@material-ui/icons/Close';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import { Preview } from './preview';
 import { Details } from './details';
 import history from 'history/browser';
+import { Route, Switch } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { formateDatetimeStamp } from '../service/formate-datetime';
+
 
 const useStyles = makeStyles( theme => ({
-    li: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '60vw', 
-        marginBottom: '20px'
-    },
-    string: {
-        marginBottom: '10px'
-    },
     divider: {
         marginTop: '15px'
     },
@@ -39,17 +30,10 @@ const useStyles = makeStyles( theme => ({
         height: 30,
         margin: 'auto 0'
     },
-    modalItems: {
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-    },
 }));
 
 export const LastWidgetElasticResults = props => {
-    const [showModal, setShowModal] = useState(false);
+    const { lastWidgetElasticResults } = props;
     const [page, setPage] = useState(1); // default value
     const [pageSize, setPageSize] = useState(10); // default value
     const [totalRecords, setTotalRecords] = useState(0);
@@ -116,76 +100,54 @@ export const LastWidgetElasticResults = props => {
         }
     };
 
-    const openModal = () => setShowModal(true);
-    const closeModal = () => setShowModal(false);
-
     return (
             <>
-            <form className={classes.form__el} onSubmit={onFormSubmit}>
-                <Pagination className={classes.pagination}
-                            count={pagesCount}
-                            siblingCount={0}
-                            page={page}
-                            onChange={selectPage}
-                            variant="outlined"
-                            shape="rounded" />
-                <FormControl className={classes.form__item}>
-                    <InputLabel id="select-page-size">Page size</InputLabel>
-                    <Select labelId="select-page-size"
-                            value={pageSize}
-                            onChange={selectPageSize}>
-                                <MenuItem value={5}>5</MenuItem>
-                                <MenuItem value={10}>10</MenuItem>
-                                <MenuItem value={20}>20</MenuItem>
-                                <MenuItem value={50}>50</MenuItem>
-                    </Select>
-                </FormControl>
-                <Button className={classes.button}
-                        type="submit"
-                        variant="outlined"
-                        color="primary"
-                        endIcon={<RefreshIcon />}>Refresh</Button>
-            </form>
-            <Divider className={classes.divider} />
-            
-            <ul>
-                {
-                    props.lastWidgetElasticResults.map( item => {
-
+            <Switch>
+                <Route exact path="/lastWidgetElasticResult"
+                    render={props => {
                         return (
-                            <li key={item.operationTimestamp} className={classes.li}>
-                                <span className={classes.string}>
-                                        <span className={classes.bold}>Operation type: </span>{item.operationType}
-                                </span>
-                                <span className={classes.string}>
-                                        <span className={classes.bold}>Operation time: </span>{formateDatetimeStamp(item.operationTimestamp)}
-                                </span>
-
-                                {
-                                    !showModal ?
-                                        <Button className={classes.button}
-                                            onClick={openModal}
+                            <>
+                            <form className={classes.form__el} onSubmit={onFormSubmit}>
+                                <Pagination className={classes.pagination}
+                                            count={pagesCount}
+                                            siblingCount={0}
+                                            page={page}
+                                            onChange={selectPage}
                                             variant="outlined"
-                                            color="primary"
-                                            endIcon={<OpenInBrowser />}>Open details</Button>
-                                        :
-                                        <div className={classes.modalItems}>
-                                            <Details operationRequest={item.operationRequest} 
-                                                operationResult={item.operationResult}/>
-
-                                            <Button className={classes.button}
-                                                onClick={closeModal}
-                                                variant="outlined"
-                                                color="secondary"
-                                                endIcon={<CloseIcon />}>Close</Button>
-                                        </div>
-                                }
-                                <Divider className={classes.divider} />
-                            </li>
+                                            shape="rounded" />
+                                <FormControl className={classes.form__item}>
+                                    <InputLabel id="select-page-size">Page size</InputLabel>
+                                    <Select labelId="select-page-size"
+                                            value={pageSize}
+                                            onChange={selectPageSize}>
+                                                <MenuItem value={5}>5</MenuItem>
+                                                <MenuItem value={10}>10</MenuItem>
+                                                <MenuItem value={20}>20</MenuItem>
+                                                <MenuItem value={50}>50</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <Button className={classes.button}
+                                        type="submit"
+                                        variant="outlined"
+                                        color="primary"
+                                        endIcon={<RefreshIcon />}>Refresh</Button>
+                            </form>
+                            <Divider className={classes.divider} />
+                            <Preview {...props}
+                                items={lastWidgetElasticResults}
+                            />
+                            </>
                         )
-                    })
-                }
-            </ul>
+                    }}>
+                </Route>
+                <Route path="/lastWidgetElasticResult/details/:timestamp" 
+                    render={ props => {
+                        console.log(lastWidgetElasticResults.find( item => item.operationTimestamp == props.match.params.timestamp));
+                        return <Details {...props}
+                                        item={lastWidgetElasticResults.find( item => item.operationTimestamp == props.match.params.timestamp)}
+                                />
+                    }}/>
+            </Switch>
             </>
     )
 }

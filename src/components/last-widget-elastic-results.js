@@ -142,7 +142,6 @@ export const LastWidgetElasticResults = props => {
                 </Route>
                 <Route path="/lastWidgetElasticResult/details/:timestamp" 
                     render={ props => {
-                        console.log(lastWidgetElasticResults.find( item => item.operationTimestamp == props.match.params.timestamp));
                         return <Details {...props}
                                         item={lastWidgetElasticResults.find( item => item.operationTimestamp == props.match.params.timestamp)}
                                 />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link }  from 'react-router-dom';
+import { Link, useLocation }  from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Divider } from '@material-ui/core';
 import { OpenInBrowser } from '@material-ui/icons';
@@ -30,6 +30,7 @@ const useStyles = makeStyles( theme => ({
 
 export const Preview = props => {
     const classes = useStyles();
+    const location = useLocation();
 
     return (
         <ul>
@@ -44,7 +45,7 @@ export const Preview = props => {
                         <span className={classes.string}>
                                 <span className={classes.bold}>Operation time: </span>{formateDatetimeStamp(item.operationTimestamp)}
                         </span>
-                        <Link className={classes.link} to={`lastAggregateElasticResult/details/${item.operationTimestamp}`}>
+                        <Link className={classes.link} to={`${location.pathname}/details/${item.operationTimestamp}`}>
                             <Button className={classes.button}
                                     variant="outlined"
                                     color="primary"

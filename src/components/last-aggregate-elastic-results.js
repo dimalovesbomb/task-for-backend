@@ -33,7 +33,7 @@ const useStyles = makeStyles( theme => ({
 }));
 
 export const LastAggregateElasticResults = props => {
-    const { lastAggregateElasticResults } = props;
+    const { lastAggregateElasticResults, requestAggregateLastElasticResults } = props;
     const [page, setPage] = useState(1); // default value
     const [pageSize, setPageSize] = useState(10); // default value
     const [totalRecords, setTotalRecords] = useState(0);
@@ -96,7 +96,7 @@ export const LastAggregateElasticResults = props => {
         }
 
         if (page && pageSize) {
-            props.requestAggregateLastElasticResults(page, pageSize);
+            requestAggregateLastElasticResults(page, pageSize);
         }
     };
 

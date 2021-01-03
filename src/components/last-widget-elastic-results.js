@@ -85,8 +85,7 @@ export const LastWidgetElasticResults = props => {
     const updateUrl = (page, pageSize) => {
         history.push({
             pathname: '/lastWidgetElasticResult',
-            search: `?pageQ=${page}&pageSizeQ=${pageSize}`,
-            state: { page, pageSize }
+            search: `?pageQ=${page}&pageSizeQ=${pageSize}`
         });
     };
 

@@ -6,11 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { Preview } from './preview';
 import { Details } from './details';
 import history from 'history/browser';
-import { Route, Switch } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles(theme => ({
     divider: {
         marginTop: '15px'
     },
@@ -42,10 +41,10 @@ export const LastAggregateElasticResults = props => {
     const classes = useStyles();
     const location = useLocation();
 
-    useEffect( () => {
+    useEffect(() => {
         fetch('http://78.155.197.183:9999/epz/analytics-aggregator/api/lastAggregateElasticResults/count')
-            .then( res => res.json())
-            .then( res => {
+            .then(res => res.json())
+            .then(res => {
                 setTotalRecords(res);
                 setPagesCount(Math.ceil(res / pageSize));
             });
@@ -85,8 +84,7 @@ export const LastAggregateElasticResults = props => {
     const updateUrl = (page, pageSize) => {
         history.push({
             pathname: '/lastAggregateElasticResult',
-            search: `?pageQ=${page}&pageSizeQ=${pageSize}`,
-            state: { page, pageSize }
+            search: `?pageQ=${page}&pageSizeQ=${pageSize}`
         });
     };
 
@@ -101,52 +99,52 @@ export const LastAggregateElasticResults = props => {
     };
 
     return (
-            <>
+        <>
             <Switch>
                 <Route exact path="/lastAggregateElasticResult"
                     render={props => {
                         return (
                             <>
-                            <form className={classes.form__el} onSubmit={onFormSubmit}>
-                                <Pagination className={classes.pagination}
-                                            count={pagesCount}
-                                            siblingCount={0}
-                                            page={page}
-                                            onChange={selectPage}
-                                            variant="outlined"
-                                            shape="rounded" />
-                                <FormControl className={classes.form__item}>
-                                    <InputLabel id="select-page-size">Page size</InputLabel>
-                                    <Select labelId="select-page-size"
+                                <form className={classes.form__el} onSubmit={onFormSubmit}>
+                                    <Pagination className={classes.pagination}
+                                        count={pagesCount}
+                                        siblingCount={0}
+                                        page={page}
+                                        onChange={selectPage}
+                                        variant="outlined"
+                                        shape="rounded" />
+                                    <FormControl className={classes.form__item}>
+                                        <InputLabel id="select-page-size">Page size</InputLabel>
+                                        <Select labelId="select-page-size"
                                             value={pageSize}
                                             onChange={selectPageSize}>
-                                                <MenuItem value={5}>5</MenuItem>
-                                                <MenuItem value={10}>10</MenuItem>
-                                                <MenuItem value={20}>20</MenuItem>
-                                                <MenuItem value={50}>50</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <Button className={classes.button}
+                                            <MenuItem value={5}>5</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem>
+                                            <MenuItem value={20}>20</MenuItem>
+                                            <MenuItem value={50}>50</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <Button className={classes.button}
                                         type="submit"
                                         variant="outlined"
                                         color="primary"
                                         endIcon={<RefreshIcon />}>Refresh</Button>
-                            </form>
-                            <Divider className={classes.divider} />
-                            <Preview {...props}
-                                items={lastAggregateElasticResults}
-                            />
+                                </form>
+                                <Divider className={classes.divider} />
+                                <Preview {...props}
+                                    items={lastAggregateElasticResults}
+                                />
                             </>
                         )
                     }}>
                 </Route>
-                <Route path="/lastAggregateElasticResult/details/:timestamp" 
-                    render={ props => {
+                <Route path="/lastAggregateElasticResult/details/:timestamp"
+                    render={props => {
                         return <Details {...props}
-                                        item={lastAggregateElasticResults.find( item => item.operationTimestamp == props.match.params.timestamp)}
-                                />
-                    }}/>
+                            item={lastAggregateElasticResults.find(item => item.operationTimestamp == props.match.params.timestamp)}
+                        />
+                    }} />
             </Switch>
-            </>
+        </>
     )
 }

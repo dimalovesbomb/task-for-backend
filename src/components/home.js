@@ -14,9 +14,7 @@ const useStyles = makeStyles( theme => ({
     }
 }))
 
-export const Home = props => {
-    const [meme, setMeme] = useState({});
-
+export const Home = () => {
     const classes = useStyles();
 
     return (

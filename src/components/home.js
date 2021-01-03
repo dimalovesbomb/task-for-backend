@@ -11,23 +11,6 @@ const useStyles = makeStyles( theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%'
-    },
-    randomPic: {
-        position: 'absolute',
-        display: 'flex',
-        flexDirection: 'column',
-        top: 10,
-        left: 10,
-        width: 400,
-        height: 400
-    },
-    'randomPic img': {
-        verticalAlign: 'top',
-        maxWidth: '25%',
-        height: 'auto'
-    },
-    randomLink: {
-        fontSize: 12
     }
 }))
 
@@ -36,20 +19,8 @@ export const Home = props => {
 
     const classes = useStyles();
 
-    useEffect( () => {
-        fetch('https://meme-api.herokuapp.com/gimme')
-            .then(res => res.json())
-            .then(res => setMeme(res))
-            .catch(error => console.error(error));
-    }, []);
-
     return (
         <div className={classes.home}>
-            <div className={classes.randomPic}>
-                <img src={meme.url} alt={meme.title} />
-                <a className={classes.randomLink} color="secondary" href={meme.postLink} target="_blank">To this post</a>
-            </div>
-
             <List>
                 <Divider />
                 <Link to="/configuration">
